@@ -40,31 +40,74 @@ export const generate = (data) => `
         </div>
     </div>
     <div style="width: 65%; padding-left: 20px;">
-        <h2 style="font-size: 12pt; font-weight: bold; color: #1e40af; border-bottom: 2px solid #dbeafe; padding-bottom: 4px; margin-bottom: 12px;">SUMMARY</h2>
-        <p style="font-size: 10pt; color: #4b5563;">${data.summary}</p>
+      
+            <h2 style="font-size: 12pt; font-weight: bold; color: #1e40af; border-bottom: 2px solid #dbeafe; padding-bottom: 4px; margin-bottom: 12px;">SUMMARY</h2>
+            <p style="font-size: 10pt; color: #4b5563;">${data.summary}</p>
+         
+       ${
+         Array.isArray(data.experience) && data.experience.length > 0
+           ? `
         <h2 style="font-size: 12pt; font-weight: bold; color: #1e40af; border-bottom: 2px solid #dbeafe; padding-bottom: 4px; margin-top: 24px; margin-bottom: 12px;">WORK EXPERIENCE</h2>
-        ${data.workExperience
+         ${data.experience
+           .map(
+             (job) => `
+           <div style="margin-bottom: 16px;">
+             <h3 style="font-size: 11pt; font-weight: bold;">${job.title}</h3>
+              <p style="font-size: 10pt; font-weight: 600; color: #4b5563;">${
+                job.company
+              } | ${job.dateRange}</p>
+              <ul style="font-size: 10pt; color: #4b5563; margin-top: 4px; padding-left: 20px;">
+                ${(job.responsibilities || [])
+                  .map((resp) => `<li>${resp}</li>`)
+                  .join("")}
+              </ul>
+             </div>
+           `
+           )
+           .join("")}
+           `
+           : ""
+       }
+    
+           ${
+             Array.isArray(data.projects) && data.projects.length > 0
+               ? `
+           <h2 style="font-size: 12pt; font-weight: bold; color: #1e40af; border-bottom: 2px solid #dbeafe; padding-bottom: 4px; margin-top: 24px; margin-bottom: 12px;">PERSONAL PROJECTS</h2>
+        ${data.projects
           .map(
-            (job) => `
+            (proj) => `
           <div style="margin-bottom: 16px;">
-            <h3 style="font-size: 11pt; font-weight: bold;">${job.role}</h3>
-            <p style="font-size: 10pt; font-semibold; color: #4b5563;">${job.company} | ${job.startDate} - ${job.endDate}</p>
-            <p style="font-size: 10pt; color: #4b5563; margin-top: 4px;">${job.description}</p>
+             <h3 style="font-size: 11pt; font-weight: bold;">${proj.name}</h3>
+               <ul style="font-size: 10pt; color: #4b5563; margin-top: 4px; padding-left: 20px;">
+                 ${(proj.details || [])
+                   .map((detail) => `<li>${detail}</li>`)
+                   .join("")}
+              </ul>
           </div>
         `
           )
           .join("")}
-        <h2 style="font-size: 12pt; font-weight: bold; color: #1e40af; border-bottom: 2px solid #dbeafe; padding-bottom: 4px; margin-top: 24px; margin-bottom: 12px;">EDUCATION</h2>
-        ${data.education
-          .map(
-            (edu) => `
-          <div style="margin-bottom: 16px;">
-            <h3 style="font-size: 11pt; font-weight: bold;">${edu.institution}</h3>
-            <p style="font-size: 10pt; color: #4b5563;">${edu.degree}, ${edu.endDate}</p>
-          </div>
         `
-          )
-          .join("")}
+               : ""
+           }
+    
+        ${
+          Array.isArray(data.education) && data.education.length > 0
+            ? `
+         <h2 style="font-size: 12pt; font-weight: bold; color: #1e40af; border-bottom: 2px solid #dbeafe; padding-bottom: 4px; margin-top: 24px; margin-bottom: 12px;">EDUCATION</h2>
+         ${data.education
+           .map(
+             (edu) => `
+           <div style="margin-bottom: 16px;">
+             <h3 style="font-size: 11pt; font-weight: bold;">${edu.degree}</h3>
+              <p style="font-size: 10pt; color: #4b5563;">${edu.date}</p>
+            </div>
+          `
+           )
+           .join("")}
+          `
+            : ""
+        }
+      </div>
     </div>
-  </div>
-`;
+    `;
